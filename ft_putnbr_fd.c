@@ -6,13 +6,13 @@
 /*   By: gode-jes <gode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:12:31 by gode-jes          #+#    #+#             */
-/*   Updated: 2022/11/07 16:39:45 by gode-jes         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:36:13 by gode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	print(int j, int fd)
+static void	print(int j, int fd)
 {
 	char	n;
 
@@ -20,7 +20,7 @@ void	print(int j, int fd)
 	write(fd, &n, 1);
 }
 
-long int	multiplicador(long int i, int nb)
+static long int	multiplicador(long int i, int nb)
 {
 	i = 10;
 	while (nb / i != 0)

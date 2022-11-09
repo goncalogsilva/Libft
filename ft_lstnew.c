@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gode-jes <gode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 10:45:12 by gode-jes          #+#    #+#             */
-/*   Updated: 2022/11/09 10:46:48 by gode-jes         ###   ########.fr       */
+/*   Created: 2022/11/08 11:18:59 by gode-jes          #+#    #+#             */
+/*   Updated: 2022/11/08 11:25:18 by gode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+t_list	*ft_lstnew(void *content)
 {
-	unsigned char	*pdest;
-	unsigned char	*psrc;
+	t_list	*node;
 
-	if (dest == NULL && src == NULL)
+	node = (t_list *) malloc(sizeof(t_list));
+	if (!node)
 		return (NULL);
-	pdest = (unsigned char *) dest;
-	psrc = (unsigned char *) src;
-	if (pdest < psrc)
-		return (ft_memcpy(dest, src, n));
-	while (n > 0)
-	{
-		n--;
-		pdest[n] = psrc[n];
-	}
-	return (pdest);
+	node->content = content;
+	node->next = NULL;
+	return (node);
 }

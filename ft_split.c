@@ -6,7 +6,7 @@
 /*   By: gode-jes <gode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:51:47 by gode-jes          #+#    #+#             */
-/*   Updated: 2022/11/07 13:15:26 by gode-jes         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:36:29 by gode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 /*#include <stdlib.h>
 #include <stdio.h>*/
 
-int	count_words(char const *s, char c)
+static int	count_words(char const *s, char c)
 {
 	int	cnt;
 
@@ -32,19 +32,21 @@ int	count_words(char const *s, char c)
 	return (cnt);
 }
 
-int	*size_words(char const *s, char c)
+static int	*size_words(char const *s, char c, int num)
 {
 	int	*res;
 	int	cnt;
 	int	i;
-	int	num;
 
-	num = count_words(s, c);
 	res = (int *) malloc (num * sizeof(int));
+	if (!res)
+		return (NULL);
 	i = 0;
-	while (*s != '\0')
+	while (*s != '\0' && i < num)
 	{
 		cnt = 0;
+		while (*s == c)
+			s++;
 		while (*s != c && *s != '\0')
 		{
 			s++;
@@ -59,23 +61,44 @@ int	*size_words(char const *s, char c)
 	return (res);
 }
 
-char	**aloc_table(int num, int *size)
+static char	**aloc_table(int num, int *size)
 {
 	char	**res;
 	int		i;
 
-	res = (char **) malloc (num * sizeof(char *) + 1);
+	res = (char **) malloc ((num + 1) * sizeof(char *));
 	if (!res)
 		return (NULL);
 	i = 0;
 	while (i < num)
 	{
-		res[i] = (char *) malloc (size[i] * sizeof(char) + 1);
+		res[i] = (char *) malloc ((size[i] + 1) * sizeof(char));
 		if (!res[i])
 			return (NULL);
 		i++;
 	}
+	free(size);
 	return (res);
+}
+
+static void	fill(char const *s, char c, char **words, int num)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (*s != '\0' && i < num)
+	{
+		j = 0;
+		while (*s == c)
+			s++;
+		while (*s != c && *s != '\0')
+			words[i][j++] = *s++;
+		words[i++][j] = '\0';
+		if (*s == '\0')
+			break ;
+		s++;
+	}
 }
 
 char	**ft_split(char const *s, char c)
@@ -83,30 +106,20 @@ char	**ft_split(char const *s, char c)
 	int		num;
 	int		*array;
 	char	**words;
-	int		i;
-	int		j;
 
 	num = count_words(s, c);
-	array = size_words(s, c);
+	array = size_words(s, c, num);
 	words = aloc_table(num, array);
-	i = 0;
-	while (*s != '\0')
-	{
-		j = 0;
-		while (*s != c && *s != '\0')
-			words[i][j++] = *s++;
-		words[i][j] = '\0';
-		if (*s == '\0')
-			break ;
-		i++;
-		s++;
-	}
+	if (!words)
+		return (NULL);
+	fill(s, c, words, num);
+	words[num] = NULL;
 	return (words);
 }
 
 /*int	main(void)
 {
-	char	*string = "ola tudo bem sou eu";
+	char	*string = "      split       this for   me  !       ";
 	char	**res;
 	int		i;
 

@@ -6,7 +6,7 @@
 /*   By: gode-jes <gode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:41:49 by gode-jes          #+#    #+#             */
-/*   Updated: 2022/11/07 17:22:53 by gode-jes         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:37:08 by gode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	count_digits(long int n)
 	return (size);
 }
 
-static char	*aloc_array(int size, int n)
+static char	*aloc_array(int size, long int n)
 {
 	char	*array;
 
@@ -69,20 +69,10 @@ static long int	multiplicador(int size)
 	return (mult);
 }
 
-char	*ft_itoa(int n)
+static void	calc(char *array, long int nb, long int mult, int size)
 {
-	int				size;
-	int				i;
-	long int		mult;
-	long int		nb;
-	char			*array;
+	int	i;
 
-	nb = (long int) n;
-	size = count_digits(nb);
-	array = aloc_array(size, nb);
-	if (array == NULL)
-		return (NULL);
-	mult = multiplicador(size);
 	i = 0;
 	if (nb < 0)
 	{
@@ -96,5 +86,21 @@ char	*ft_itoa(int n)
 		nb = nb - ((nb / mult) * mult);
 		mult = mult / 10;
 	}
+}
+
+char	*ft_itoa(int n)
+{
+	int				size;
+	long int		mult;
+	long int		nb;
+	char			*array;
+
+	nb = (long int) n;
+	size = count_digits(nb);
+	array = aloc_array(size, nb);
+	if (array == NULL)
+		return (NULL);
+	mult = multiplicador(size);
+	calc(array, nb, mult, size);
 	return (array);
 }
